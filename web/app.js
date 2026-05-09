@@ -2,7 +2,7 @@
 // auto-refresh は 3 秒間隔。slider 操作中は refresh をスキップして UI 揺れを抑える。
 
 const REFRESH_MS = 3000;
-const VOL_MAX = 150; // 100% 以上の boost も可
+const VOL_MAX = 100; // boost 不要
 
 let dragging = false;
 let timer = null;
