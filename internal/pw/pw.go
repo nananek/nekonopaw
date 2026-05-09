@@ -251,18 +251,23 @@ func goOnNodeInfo(id C.uint32_t, dict *C.struct_spa_dict) {
 		return
 	}
 	n.known = true
-	n.nodeName = lookupDict(dict, "node.name")
-	n.description = firstNonEmpty(
+	// 空文字で上書きしない (pipewire restart 合間の partial info event で
+	// 既存値を消す事故を踏んだ)。空でない値だけ採用、空はスキップ。
+	setIfNonEmpty := func(target *string, v string) {
+		if v != "" {
+			*target = v
+		}
+	}
+	setIfNonEmpty(&n.nodeName, lookupDict(dict, "node.name"))
+	setIfNonEmpty(&n.description, firstNonEmpty(
 		lookupDict(dict, "device.description"),
 		lookupDict(dict, "node.description"),
 		lookupDict(dict, "node.nick"),
-	)
-	n.appName = lookupDict(dict, "application.name")
-	n.appBinary = lookupDict(dict, "application.process.binary")
-	n.mediaName = lookupDict(dict, "media.name")
-	if s := lookupDict(dict, "node.state"); s != "" {
-		n.state = s
-	}
+	))
+	setIfNonEmpty(&n.appName, lookupDict(dict, "application.name"))
+	setIfNonEmpty(&n.appBinary, lookupDict(dict, "application.process.binary"))
+	setIfNonEmpty(&n.mediaName, lookupDict(dict, "media.name"))
+	setIfNonEmpty(&n.state, lookupDict(dict, "node.state"))
 }
 
 //export goOnNodeParam
