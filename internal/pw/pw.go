@@ -29,6 +29,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"sort"
 	"sync"
 	"unsafe"
 )
@@ -107,6 +108,9 @@ func (c *Client) Sinks(ctx context.Context) ([]Sink, error) {
 			State:       n.state,
 		})
 	}
+	// Go map の iteration 順は毎回ランダム。ID 昇順に固定して frontend で
+	// list の順番が refresh のたびに入れ替わるのを防ぐ。
+	sort.Slice(res, func(i, j int) bool { return res[i].ID < res[j].ID })
 	return res, nil
 }
 
@@ -128,6 +132,7 @@ func (c *Client) Streams(ctx context.Context) ([]Stream, error) {
 			Mute:      n.mute,
 		})
 	}
+	sort.Slice(res, func(i, j int) bool { return res[i].ID < res[j].ID })
 	return res, nil
 }
 
