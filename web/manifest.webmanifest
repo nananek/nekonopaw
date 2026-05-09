@@ -1,0 +1,18 @@
+{
+  "name": "nekonopaw",
+  "short_name": "nekonopaw",
+  "description": "PipeWire web mixer",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1e",
+  "theme_color": "#1e1e1e",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

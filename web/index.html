@@ -2,21 +2,32 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1e1e1e">
   <title>nekonopaw</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
   <link rel="stylesheet" href="/app.css">
 </head>
 <body>
-  <h1>nekonopaw</h1>
-  <p>PipeWire mixer (work in progress)。<code>/api/health</code> が現状動作確認用。</p>
-  <section id="streams">
-    <h2>Streams (sink-inputs)</h2>
-    <ul id="stream-list"><li>(loading)</li></ul>
-  </section>
-  <section id="sinks">
-    <h2>Sinks (output devices)</h2>
-    <ul id="sink-list"><li>(loading)</li></ul>
-  </section>
-  <script src="/app.js"></script>
+  <header>
+    <h1>nekonopaw</h1>
+    <button id="refresh" type="button" title="更新">⟳</button>
+  </header>
+
+  <main>
+    <section id="sinks-section">
+      <h2>Sinks</h2>
+      <div id="sinks" class="cards"></div>
+    </section>
+    <section id="streams-section">
+      <h2>Streams</h2>
+      <div id="streams" class="cards"></div>
+    </section>
+  </main>
+
+  <footer><span id="status">loading…</span></footer>
+
+  <script src="/app.js" type="module"></script>
 </body>
 </html>

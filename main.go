@@ -20,18 +20,21 @@ import (
 var webFS embed.FS
 
 func main() {
-	listen := flag.String("listen", "127.0.0.1:8080", "bind address (host:port). Tailscale IP を指定する想定")
+	listen := flag.String("listen", "127.0.0.1:8731", "bind address (host:port). Tailscale IP を指定する想定")
 	flag.Parse()
 
+	// libpipewire daemon presence check (cgo)。daemon が居ないなら mixer も
+	// 動かないのでここで早く落ちて欲しい。実際の操作系は pactl backend が担当。
 	pw.Init()
 	defer pw.Deinit()
-
 	client, err := pw.Connect()
 	if err != nil {
 		log.Fatalf("pipewire connect: %v", err)
 	}
 	defer client.Close()
-	log.Printf("connected to pipewire daemon")
+	log.Printf("pipewire daemon reachable")
+
+	backend := pw.NewPactlBackend()
 
 	staticFS, err := fs.Sub(webFS, "web")
 	if err != nil {
@@ -40,7 +43,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              *listen,
-		Handler:           api.New(client, staticFS).Handler(),
+		Handler:           api.New(backend, staticFS).Handler(),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
