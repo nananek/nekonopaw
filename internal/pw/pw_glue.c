@@ -14,6 +14,9 @@
 
 #include <pipewire/pipewire.h>
 #include <pipewire/extensions/metadata.h>
+#include <spa/pod/iter.h>           // SPA_POD_OBJECT_FOREACH (新しい SPA で
+                                    // parser.h からの transitive include が
+                                    // 外れているので明示)
 #include <spa/pod/parser.h>
 #include <spa/pod/builder.h>
 #include <spa/utils/dict.h>
